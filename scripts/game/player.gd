@@ -127,7 +127,8 @@ func _process(_delta):
 		hand_sprite.region_rect = HAND_REGIONS["default_down"]
 		leg_sprite.region_rect = LEG_REGIONS["default_down"]
 		head_sprite.region_rect = HEAD_REGIONS["default_down"]
-		feet_sprite.region_rect = FEET_REGIONS["default_down"]
+		if velocity == Vector2.ZERO:
+			feet_sprite.region_rect = FEET_REGIONS["default_down"]
 		current_run_dir = RunDir.DOWN
 		
 	elif(direction_string.contains("Right")):
