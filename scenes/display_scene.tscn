@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://pm2rgyweu58u"]
+
+[ext_resource type="PackedScene" uid="uid://biuiyqggshxc0" path="res://scenes/player.tscn" id="1_2wl41"]
+[ext_resource type="Script" uid="uid://j8j2rtwmtct1" path="res://scripts/gui/display_scene.gd" id="1_qw73c"]
+
+[node name="DisplayScene" type="Node2D" node_paths=PackedStringArray("player")]
+script = ExtResource("1_qw73c")
+player = NodePath("SubViewport/Player")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="Player" parent="SubViewport" instance=ExtResource("1_2wl41")]
+
+[node name="Camera2D2" type="Camera2D" parent="SubViewport/Player"]
+zoom = Vector2(4, 4)

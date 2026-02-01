@@ -1,0 +1,679 @@
+[gd_scene load_steps=91 format=3 uid="uid://cn6jimxv22d7x"]
+
+[ext_resource type="Script" uid="uid://8u7a4hqkbnh8" path="res://scripts/gui/create_character.gd" id="1_h557r"]
+[ext_resource type="Texture2D" uid="uid://1ewrv0f5n6it" path="res://assets/images/ui/backkground.png" id="2_8614w"]
+[ext_resource type="Texture2D" uid="uid://dmrqxgro6sq2i" path="res://assets/images/ui/buttons.png" id="2_nof60"]
+[ext_resource type="Texture2D" uid="uid://biom43x2mdun2" path="res://assets/images/ui/screenshot.png" id="2_w388w"]
+[ext_resource type="AudioStream" uid="uid://crdno3cd8fehv" path="res://assets/sounds/hover.mp3" id="3_nof60"]
+[ext_resource type="FontFile" uid="uid://b31n13t8vwohc" path="res://assets/other/fonts/Lilian.ttf" id="3_q75lb"]
+[ext_resource type="AudioStream" uid="uid://cxyibq2ug7x03" path="res://assets/sounds/click (2).mp3" id="4_flluo"]
+[ext_resource type="Texture2D" uid="uid://dbfi72utfgcds" path="res://assets/images/ui/picture.png" id="6_8614w"]
+[ext_resource type="FontFile" uid="uid://dcytal8t6youa" path="res://assets/other/fonts/Thixel.ttf" id="6_w388w"]
+[ext_resource type="Texture2D" uid="uid://dpkoj856imj4g" path="res://assets/images/ui/namebox.png" id="7_8mxxh"]
+[ext_resource type="PackedScene" uid="uid://biuiyqggshxc0" path="res://scenes/player.tscn" id="11_w388w"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8mxxh"]
+texture = ExtResource("2_8614w")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tbcgi"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nof60"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(10, 36, 6, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nof60"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_flluo"]
+texture = ExtResource("2_nof60")
+texture_margin_left = 7.4109035
+region_rect = Rect2(26, 36, 6, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_flluo"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cd4ww"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(42, 36, 6, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_urwa6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q75lb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fia0a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8614w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8mxxh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w388w"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fia0a"]
+font = ExtResource("6_w388w")
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.40392157)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_urwa6"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(9, 49, 6, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd4ww"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q75lb"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(25, 48, 6, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rte6o"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jj8q7"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(41.000374, 49, 5.999626, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v8md7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_486j4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5vp1m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0gkbd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ye7om"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sp7fy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_w388w"]
+font = ExtResource("6_w388w")
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.40392157)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rte6o"]
+font = ExtResource("6_w388w")
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.40392157)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0r38v"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(64, 49, 7, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0ipfv"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pwbi5"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(74, 49, 7, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_utco3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vh8mi"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(84, 49, 7, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qai4y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3limt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fyiq4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rul1u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p2owc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_au21l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8mxxh"]
+font = ExtResource("6_w388w")
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.40392157)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0gkbd"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(69, 36, 11, 12)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aokrw"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ye7om"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(85, 36, 11, 12)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6wfy5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sp7fy"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(101, 36, 11, 12)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k8wrj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w8tfo"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(85, 36, 11, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tbcgi"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(85, 36, 11, 12)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_knjxa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mqw1i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3wsm0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w388w"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8614w"]
+font = ExtResource("6_w388w")
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.40392157)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_q75lb"]
+font = ExtResource("6_w388w")
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.40392157)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w8tfo"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fia0a"]
+texture = ExtResource("6_8614w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w388w"]
+content_margin_left = 5.0
+content_margin_right = 6.0
+texture = ExtResource("7_8mxxh")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jj8q7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rte6o"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(9, 65, 45, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0r38v"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v8md7"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(62, 65, 45, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4ku6d"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_486j4"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(113, 65, 45, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5mq2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3ft2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45dqc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o7ly3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6bq8m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i8wok"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5vp1m"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(9, 97, 45, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pg8kw"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aokrw"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(62, 97, 45, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wnvq7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6wfy5"]
+texture = ExtResource("2_nof60")
+region_rect = Rect2(113, 97, 45, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8jjuh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vaj3m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w7c6n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bsif3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ijv4d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sybql"]
+
+[node name="CreateCharacter" type="Control" node_paths=PackedStringArray("player")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1_h557r")
+player = NodePath("CenterContainer/VBoxContainer/CharacterEditor/CenterContainer2/SubViewportContainer/SubViewport/Player")
+
+[node name="Screenshot" type="Sprite2D" parent="."]
+position = Vector2(959.5, 540)
+scale = Vector2(0.25052086, 0.25555554)
+texture = ExtResource("2_w388w")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundPanel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_8mxxh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="TopSpacingPanel" type="Panel" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tbcgi")
+
+[node name="CharacterEditor" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer/CharacterEditor"]
+layout_mode = 2
+
+[node name="CharacterAttributes" type="VBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = -2
+
+[node name="Hair" type="HBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes"]
+layout_mode = 2
+
+[node name="LHairButton" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Hair"]
+custom_minimum_size = Vector2(6, 8)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_nof60")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_nof60")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_flluo")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_flluo")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cd4ww")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_urwa6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_q75lb")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fia0a")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8614w")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_8mxxh")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_w388w")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Hair"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hair"
+label_settings = SubResource("LabelSettings_fia0a")
+horizontal_alignment = 1
+
+[node name="RHairButton" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Hair"]
+custom_minimum_size = Vector2(6, 8)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_urwa6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_cd4ww")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q75lb")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_rte6o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jj8q7")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_v8md7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_486j4")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_5vp1m")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0gkbd")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_ye7om")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sp7fy")
+
+[node name="Panel" type="Panel" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Hair"]
+layout_mode = 2
+
+[node name="Body" type="HBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes"]
+layout_mode = 2
+
+[node name="LBodyButton" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Body"]
+custom_minimum_size = Vector2(6, 8)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_nof60")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_nof60")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_flluo")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_flluo")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cd4ww")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_urwa6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_q75lb")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fia0a")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8614w")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_8mxxh")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_w388w")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Shirt"
+label_settings = SubResource("LabelSettings_w388w")
+horizontal_alignment = 1
+
+[node name="RBodyButton" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Body"]
+custom_minimum_size = Vector2(6, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_urwa6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_cd4ww")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q75lb")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_rte6o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jj8q7")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_v8md7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_486j4")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_5vp1m")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0gkbd")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_ye7om")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sp7fy")
+
+[node name="Panel" type="Panel" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Body"]
+layout_mode = 2
+
+[node name="Legs" type="HBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes"]
+layout_mode = 2
+
+[node name="LLegsButton" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Legs"]
+custom_minimum_size = Vector2(6, 8)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_nof60")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_nof60")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_flluo")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_flluo")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cd4ww")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_urwa6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_q75lb")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fia0a")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8614w")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_8mxxh")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_w388w")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Legs"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "Pants"
+label_settings = SubResource("LabelSettings_rte6o")
+horizontal_alignment = 1
+
+[node name="RLegsButton" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Legs"]
+custom_minimum_size = Vector2(6, 8)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_urwa6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_cd4ww")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q75lb")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_rte6o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jj8q7")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_v8md7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_486j4")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_5vp1m")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0gkbd")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_ye7om")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sp7fy")
+
+[node name="Panel" type="Panel" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Legs"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Eyes" type="HBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Eyes"]
+custom_minimum_size = Vector2(7, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_0r38v")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_0ipfv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pwbi5")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_utco3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_vh8mi")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_qai4y")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_3limt")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fyiq4")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_rul1u")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_p2owc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_au21l")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Eyes"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Eye Color"
+label_settings = SubResource("LabelSettings_8mxxh")
+horizontal_alignment = 1
+
+[node name="EyeColorButton" type="ColorPickerButton" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Eyes"]
+custom_minimum_size = Vector2(11, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_0gkbd")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_aokrw")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ye7om")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_6wfy5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_sp7fy")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_k8wrj")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_w8tfo")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxTexture_tbcgi")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_knjxa")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_mqw1i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3wsm0")
+theme_override_icons/bg = SubResource("AtlasTexture_w388w")
+
+[node name="HairColor" type="HBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/HairColor"]
+custom_minimum_size = Vector2(7, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_0r38v")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_0ipfv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pwbi5")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_utco3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_vh8mi")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_qai4y")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_3limt")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fyiq4")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_rul1u")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_p2owc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_au21l")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/HairColor"]
+layout_mode = 2
+text = "Hair Color"
+label_settings = SubResource("LabelSettings_8614w")
+horizontal_alignment = 1
+
+[node name="HairColorButton" type="ColorPickerButton" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/HairColor"]
+custom_minimum_size = Vector2(11, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_0gkbd")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_aokrw")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ye7om")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_6wfy5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_sp7fy")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_k8wrj")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_w8tfo")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxTexture_tbcgi")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_knjxa")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_mqw1i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3wsm0")
+theme_override_icons/bg = SubResource("AtlasTexture_w388w")
+
+[node name="Skin" type="HBoxContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Skin"]
+custom_minimum_size = Vector2(7, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_0r38v")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_0ipfv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pwbi5")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_utco3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_vh8mi")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_qai4y")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_3limt")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fyiq4")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_rul1u")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_p2owc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_au21l")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Skin"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_q75lb")
+text = "Skin Color"
+label_settings = SubResource("LabelSettings_q75lb")
+horizontal_alignment = 1
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Skin"]
+custom_minimum_size = Vector2(11, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_0gkbd")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_aokrw")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ye7om")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_6wfy5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_sp7fy")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_k8wrj")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_w8tfo")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxTexture_tbcgi")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_knjxa")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_mqw1i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3wsm0")
+theme_override_icons/bg = SubResource("AtlasTexture_w388w")
+
+[node name="SpacingPanel" type="Panel" parent="CenterContainer/VBoxContainer/CharacterEditor"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_w8tfo")
+
+[node name="CenterContainer2" type="CenterContainer" parent="CenterContainer/VBoxContainer/CharacterEditor"]
+layout_mode = 2
+
+[node name="CharacterPanel" type="Panel" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer2"]
+custom_minimum_size = Vector2(56, 66)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fia0a")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer2"]
+z_index = 10
+texture_filter = 1
+custom_minimum_size = Vector2(50, 75)
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer2/SubViewportContainer"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(50, 75)
+render_target_update_mode = 4
+
+[node name="Player" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer2/SubViewportContainer/SubViewport" instance=ExtResource("11_w388w")]
+texture_filter = 1
+
+[node name="Camera2D" type="Camera2D" parent="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer2/SubViewportContainer/SubViewport/Player"]
+texture_filter = 1
+position = Vector2(0.2, -6.5)
+zoom = Vector2(2, 2)
+
+[node name="BottomButtons" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="LineEdit" type="LineEdit" parent="CenterContainer/VBoxContainer/BottomButtons"]
+custom_minimum_size = Vector2(75, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_placeholder_color = Color(0.827451, 0.6509804, 0.48235294, 1)
+theme_override_colors/caret_color = Color(1, 1, 1, 1)
+theme_override_colors/selection_color = Color(0.5019608, 0.5019608, 0.5019608, 0)
+theme_override_constants/minimum_character_width = 3
+theme_override_fonts/font = ExtResource("6_w388w")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_w388w")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jj8q7")
+placeholder_text = "Name..."
+alignment = 1
+
+[node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer/BottomButtons"]
+custom_minimum_size = Vector2(45, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_w388w")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_rte6o")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_0r38v")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_v8md7")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_4ku6d")
+theme_override_styles/hover = SubResource("StyleBoxTexture_486j4")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_d5mq2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_k3ft2")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_45dqc")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_o7ly3")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_6bq8m")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_i8wok")
+
+[node name="CreateButton" type="Button" parent="CenterContainer/VBoxContainer/BottomButtons"]
+custom_minimum_size = Vector2(45, 24)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 5
+theme_override_styles/normal = SubResource("StyleBoxTexture_5vp1m")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_pg8kw")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_aokrw")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_wnvq7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6wfy5")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_8jjuh")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_vaj3m")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_w7c6n")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bsif3")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_ijv4d")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sybql")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+zoom = Vector2(4, 4)
+
+[node name="HoverSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_nof60")
+
+[node name="ButtonPressedSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_flluo")
+
+[connection signal="color_changed" from="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Eyes/EyeColorButton" to="." method="_on_eye_color_button_color_changed"]
+[connection signal="picker_created" from="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Eyes/EyeColorButton" to="." method="_on_eye_color_button_picker_created"]
+[connection signal="color_changed" from="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/HairColor/HairColorButton" to="." method="_on_hair_color_button_color_changed"]
+[connection signal="picker_created" from="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/HairColor/HairColorButton" to="." method="_on_hair_color_button_picker_created"]
+[connection signal="color_changed" from="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Skin/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
+[connection signal="picker_created" from="CenterContainer/VBoxContainer/CharacterEditor/CenterContainer/CharacterAttributes/Skin/ColorPickerButton" to="." method="_on_color_picker_button_picker_created"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/BottomButtons/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/BottomButtons/CreateButton" to="." method="_on_create_button_pressed"]

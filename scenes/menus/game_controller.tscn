@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://bi3aihtq38cfg"]
+
+[ext_resource type="Script" path="res://scripts/control/game_controller.gd" id="1_6ej3c"]
+
+[node name="GameController" type="Node" node_paths=PackedStringArray("game", "gui")]
+script = ExtResource("1_6ej3c")
+game = NodePath("Game")
+gui = NodePath("GUI")
+
+[node name="Game" type="Node2D" parent="."]
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SplashScreenManager" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

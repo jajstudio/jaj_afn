@@ -1,0 +1,123 @@
+[gd_scene load_steps=21 format=3 uid="uid://biuiyqggshxc0"]
+
+[ext_resource type="Script" uid="uid://bvappf24spss3" path="res://scripts/game/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://d12cayms0fbr7" path="res://assets/images/player/torsosheet.png" id="3_dqkch"]
+[ext_resource type="Texture2D" uid="uid://bbshhlpehfjdc" path="res://assets/images/player/headsheet.png" id="4_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://mmwsokcjxv05" path="res://assets/images/player/shirtshheet.png" id="4_ur7pv"]
+[ext_resource type="Texture2D" uid="uid://2dm1vb8ey1mu" path="res://assets/images/player/eyesheet.png" id="6_y4r1p"]
+[ext_resource type="Texture2D" uid="uid://d2id254bhjxdy" path="res://assets/images/player/hairsheet.png" id="7_d2wvv"]
+[ext_resource type="Texture2D" uid="uid://bq0etuogs0uwm" path="res://assets/images/player/handsheet.png" id="8_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://dfk8u6s1ntalx" path="res://assets/images/player/legsheet.png" id="9_jej6c"]
+[ext_resource type="Texture2D" uid="uid://c5m100s0mm8cd" path="res://assets/images/player/feetsheet.png" id="10_y4r1p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
+atlas = ExtResource("10_y4r1p")
+region = Rect2(144.00986, 10.977938, 7.1168365, 4.076005)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
+atlas = ExtResource("10_y4r1p")
+region = Rect2(32, 18, 12, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
+atlas = ExtResource("3_dqkch")
+region = Rect2(13, 16, 6, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ej7"]
+atlas = ExtResource("4_ur7pv")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
+atlas = ExtResource("4_qlg0r")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4r1p"]
+atlas = ExtResource("6_y4r1p")
+region = Rect2(13, 2, 6, 2)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oprun"]
+atlas = ExtResource("6_y4r1p")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
+atlas = ExtResource("7_d2wvv")
+region = Rect2(10, 5, 12, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfm1y"]
+atlas = ExtResource("8_3v2ag")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fulsm"]
+atlas = ExtResource("9_jej6c")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
+atlas = ExtResource("10_y4r1p")
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_g2els")
+
+[node name="RunAnimationTimer" type="Timer" parent="."]
+
+[node name="EyeDartTimer" type="Timer" parent="."]
+
+[node name="PlayerBody" type="Container" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerBody"]
+visible = false
+texture = SubResource("AtlasTexture_ur7pv")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="Shadow" type="Sprite2D" parent="PlayerBody"]
+visible = false
+position = Vector2(0, 3)
+texture = SubResource("AtlasTexture_3v2ag")
+offset = Vector2(0, -0.5)
+
+[node name="Torso" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, -4)
+texture = SubResource("AtlasTexture_g2els")
+
+[node name="Shirt" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, -4)
+texture = SubResource("AtlasTexture_f1ej7")
+region_enabled = true
+region_rect = Rect2(25, 8, 12, 4)
+
+[node name="Head" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, -11)
+texture = SubResource("AtlasTexture_tuyoq")
+offset = Vector2(0, 0.5)
+region_enabled = true
+region_rect = Rect2(41, 7, 10, 9)
+
+[node name="EyeBalls" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, -9)
+texture = SubResource("AtlasTexture_y4r1p")
+
+[node name="Eyes" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, -9)
+texture = SubResource("AtlasTexture_oprun")
+region_enabled = true
+region_rect = Rect2(22, 2, 6, 2)
+region_filter_clip_enabled = true
+
+[node name="Hair" type="Sprite2D" parent="PlayerBody"]
+visible = false
+position = Vector2(0, -13)
+texture = SubResource("AtlasTexture_a8ls1")
+
+[node name="Hands" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, -1)
+texture = SubResource("AtlasTexture_qfm1y")
+offset = Vector2(0, -1.5)
+region_enabled = true
+region_rect = Rect2(25.028574, 13.99051, 11.969591, 2.0057144)
+
+[node name="Legs" type="Sprite2D" parent="PlayerBody"]
+texture = SubResource("AtlasTexture_fulsm")
+offset = Vector2(0, -0.5)
+region_enabled = true
+
+[node name="Feet" type="Sprite2D" parent="PlayerBody"]
+position = Vector2(0, 2)
+texture = SubResource("AtlasTexture_d2wvv")
+offset = Vector2(0, -0.5)
+region_enabled = true
