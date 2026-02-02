@@ -35,10 +35,10 @@ const RUN_FRAMES_LEFT = [
 ]
 
 const RUN_FRAMES_DOWN = [
-	"default_run1_left",
-	"default_run1_left", 
-	"default_run2_left",  
-	"default_run3_left",
+	"default_run1_down",
+	"default_run2_down", 
+	"default_run2_down",  
+	"default_run3_down",
 ]
 
 # This variable will track which frame we are on (e.g., 0, 1, 2, 3)
@@ -68,6 +68,8 @@ const LEG_REGIONS = {
 	"default_up": Rect2(22, 2, 6, 2),
 	"default_left": Rect2(4, 20, 6, 3),
 	"default_right": Rect2(20, 20, 6, 3),
+	"default_down_running1": Rect2(12, 25, 6, 3),
+	"default_down_running2": Rect2(12, 30, 6, 3),
 }
 
 const HEAD_REGIONS = {
@@ -88,9 +90,9 @@ const FEET_REGIONS = {
 	"default_run1_right": Rect2(112, 11, 10, 7),
 	"default_run2_right": Rect2(124, 11, 8, 7),
 	"default_run3_right": Rect2(136, 11, 6, 7),
-	"default_run1_down": Rect2(112, 11, 10, 7),
-	"default_run2_down": Rect2(124, 11, 8, 7),
-	"default_run3_down": Rect2(136, 11, 6, 7),
+	"default_run1_down": Rect2(192, 12, 6, 3),
+	"default_run2_down": Rect2(203, 12, 6, 3),
+	"default_run3_down": Rect2(214, 12, 6, 3),
 }
 
 var eye_directions: Array
@@ -125,10 +127,11 @@ func _process(_delta):
 	if(direction_string) == "Down":
 		shirt_sprite.region_rect = BODY_REGIONS["default_down"]
 		hand_sprite.region_rect = HAND_REGIONS["default_down"]
-		leg_sprite.region_rect = LEG_REGIONS["default_down"]
 		head_sprite.region_rect = HEAD_REGIONS["default_down"]
-		if velocity == Vector2.ZERO:
+		leg_sprite.region_rect = LEG_REGIONS["default_down"]
+		if velocity == Vector2.ZERO:	
 			feet_sprite.region_rect = FEET_REGIONS["default_down"]
+	
 		current_run_dir = RunDir.DOWN
 		
 	elif(direction_string.contains("Right")):

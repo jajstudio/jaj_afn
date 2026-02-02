@@ -11,8 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://c5m100s0mm8cd" path="res://assets/images/player/feetsheet.png" id="10_y4r1p"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
-atlas = ExtResource("10_y4r1p")
-region = Rect2(144.00986, 10.977938, 7.1168365, 4.076005)
+atlas = ExtResource("9_jej6c")
+region = Rect2(11.994698, 29.985073, 5.989395, 3.0312195)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
 atlas = ExtResource("10_y4r1p")
@@ -66,7 +66,6 @@ centered = false
 offset = Vector2(-8, -16)
 
 [node name="Shadow" type="Sprite2D" parent="PlayerBody"]
-visible = false
 position = Vector2(0, 3)
 texture = SubResource("AtlasTexture_3v2ag")
 offset = Vector2(0, -0.5)
