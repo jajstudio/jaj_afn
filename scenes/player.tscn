@@ -1,6 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://biuiyqggshxc0"]
+[gd_scene format=3 uid="uid://biuiyqggshxc0"]
 
 [ext_resource type="Script" uid="uid://bvappf24spss3" path="res://scripts/game/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://dhfvlkohor1bn" path="res://components/health.gd" id="2_y4r1p"]
 [ext_resource type="Texture2D" uid="uid://d12cayms0fbr7" path="res://assets/images/player/torsosheet.png" id="3_dqkch"]
 [ext_resource type="Texture2D" uid="uid://bbshhlpehfjdc" path="res://assets/images/player/headsheet.png" id="4_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://mmwsokcjxv05" path="res://assets/images/player/shirtshheet.png" id="4_ur7pv"]
@@ -48,74 +49,83 @@ atlas = ExtResource("9_jej6c")
 [sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
 atlas = ExtResource("10_y4r1p")
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=1143121371]
 script = ExtResource("1_g2els")
 
-[node name="RunAnimationTimer" type="Timer" parent="."]
+[node name="Health" type="Node" parent="." unique_id=1344062818]
+script = ExtResource("2_y4r1p")
+metadata/_custom_type_script = "uid://dhfvlkohor1bn"
 
-[node name="EyeDartTimer" type="Timer" parent="."]
+[node name="RunAnimationTimer" type="Timer" parent="." unique_id=1437256886]
 
-[node name="PlayerBody" type="Container" parent="."]
+[node name="EyeDartTimer" type="Timer" parent="." unique_id=1332653404]
+
+[node name="PlayerBody" type="Container" parent="." unique_id=1846805735]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerBody"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerBody" unique_id=20659202]
 visible = false
 texture = SubResource("AtlasTexture_ur7pv")
 centered = false
 offset = Vector2(-8, -16)
 
+<<<<<<< HEAD
 [node name="Shadow" type="Sprite2D" parent="PlayerBody"]
+=======
+[node name="Shadow" type="Sprite2D" parent="PlayerBody" unique_id=171694137]
+visible = false
+>>>>>>> ec3c827ed45791cda42c3bc1f074b029712ae7e6
 position = Vector2(0, 3)
 texture = SubResource("AtlasTexture_3v2ag")
 offset = Vector2(0, -0.5)
 
-[node name="Torso" type="Sprite2D" parent="PlayerBody"]
+[node name="Torso" type="Sprite2D" parent="PlayerBody" unique_id=1860460564]
 position = Vector2(0, -4)
 texture = SubResource("AtlasTexture_g2els")
 
-[node name="Shirt" type="Sprite2D" parent="PlayerBody"]
+[node name="Shirt" type="Sprite2D" parent="PlayerBody" unique_id=286773614]
 position = Vector2(0, -4)
 texture = SubResource("AtlasTexture_f1ej7")
 region_enabled = true
 region_rect = Rect2(25, 8, 12, 4)
 
-[node name="Head" type="Sprite2D" parent="PlayerBody"]
+[node name="Head" type="Sprite2D" parent="PlayerBody" unique_id=1437947613]
 position = Vector2(0, -11)
 texture = SubResource("AtlasTexture_tuyoq")
 offset = Vector2(0, 0.5)
 region_enabled = true
 region_rect = Rect2(41, 7, 10, 9)
 
-[node name="EyeBalls" type="Sprite2D" parent="PlayerBody"]
+[node name="EyeBalls" type="Sprite2D" parent="PlayerBody" unique_id=1482799044]
 position = Vector2(0, -9)
 texture = SubResource("AtlasTexture_y4r1p")
 
-[node name="Eyes" type="Sprite2D" parent="PlayerBody"]
+[node name="Eyes" type="Sprite2D" parent="PlayerBody" unique_id=662968857]
 position = Vector2(0, -9)
 texture = SubResource("AtlasTexture_oprun")
 region_enabled = true
 region_rect = Rect2(22, 2, 6, 2)
 region_filter_clip_enabled = true
 
-[node name="Hair" type="Sprite2D" parent="PlayerBody"]
+[node name="Hair" type="Sprite2D" parent="PlayerBody" unique_id=730855493]
 visible = false
 position = Vector2(0, -13)
 texture = SubResource("AtlasTexture_a8ls1")
 
-[node name="Hands" type="Sprite2D" parent="PlayerBody"]
+[node name="Hands" type="Sprite2D" parent="PlayerBody" unique_id=2124998066]
 position = Vector2(0, -1)
 texture = SubResource("AtlasTexture_qfm1y")
 offset = Vector2(0, -1.5)
 region_enabled = true
 region_rect = Rect2(25.028574, 13.99051, 11.969591, 2.0057144)
 
-[node name="Legs" type="Sprite2D" parent="PlayerBody"]
+[node name="Legs" type="Sprite2D" parent="PlayerBody" unique_id=594685620]
 texture = SubResource("AtlasTexture_fulsm")
 offset = Vector2(0, -0.5)
 region_enabled = true
 
-[node name="Feet" type="Sprite2D" parent="PlayerBody"]
+[node name="Feet" type="Sprite2D" parent="PlayerBody" unique_id=2037936877]
 position = Vector2(0, 2)
 texture = SubResource("AtlasTexture_d2wvv")
 offset = Vector2(0, -0.5)
