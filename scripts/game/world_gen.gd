@@ -2,53 +2,88 @@ extends Node2D
 
 @onready var tilemap: TileMap = $WorldTileMap
 @onready var tilefollower: Sprite2D = $TileFollower
+@onready var object_container = $Objects # Node to hold objects (i.e. trees, plants, pots etc.)
+@onready var minimap =  get_tree().get_first_node_in_group("minimap")
 
-@export var player: Node2D # Reference to player
-@export var chunk_size := 6 # Must be 6 idk why
-@export var view_distance := 10
+@export var player: Node2D 
+@export var chunk_size := 6 # Must be 6 idk why so leave it
+@export var view_distance := 8 # How many chunks to render around the player
+@export var tree: PackedScene = preload("res://scenes/game/worldgen/tree.tscn")
+@export var plant: PackedScene = preload("res://scenes/game/worldgen/plant.tscn")
+@export var placeable: PackedScene = preload("res://scenes/game/worldgen/staticobject.tscn")
 
-var noise := FastNoiseLite.new()
-var grass_noise := FastNoiseLite.new()
-var generated_chunks := {}
-var layer_index := 2 # The tilemap layer index to work on
+var temperature := FastNoiseLite.new()
+var moisture := FastNoiseLite.new()
+var altitude := FastNoiseLite.new()
+var varieties = null
+var random_type = null
+var object_spawn_rng = RandomNumberGenerator.new()
 
-# Store manually changed tiles by their chunk
+var generated_chunks := {} # Stores already generated chunks
+var chunk_containers = {} # Used to tie objects to their respective chunk
+
+# The tilemap layer for the player to edit tiles at
+var layer_index := 3
+
+# Used to store tiles changed by the player by their chunk
 var changed_tiles_by_chunk := {}
 
-enum Layers { GROUND = 0, WATER = 1, FLOOR = 2, COLLISION = 3 }
+# Tilemap layers
+enum Layers { UNDERWATER = 0, WATERSHADER = 1, WATER = 2, GROUND = 3, FLOOR = 4, FLOOR_DECOR = 5,  COLLISION = 6 }
 
-enum Terrain { GRASS = 0, SAND = 1, WATER = 2, DIRT = 3 }
+# Tiles/Terrains used in chunk generation
+enum Terrain { 
+	GRASS = 0, 
+	SAND = 1, 
+	WATER = 2, 
+	DIRT = 3, 
+	SNOW = 4, 
+	HAUNT = 5, 
+	PLAIN = 6, 
+	STONE = 7, 
+	AUTUMM = 8,
+	MATTED_GRASS = 9,
+	WATER_EDGE = 10
+	}
 
-enum Foliage { }
-
-# This dictionary holds all the rules/probabilities for placing decorations.
-const DECORATION_RULES = {
-	Terrain.GRASS: [
-		{"tile": null, "weight": 94},
-		{"tile": Vector2i(4, 4), "weight": 3},   # Tree
-
-	],
-	Terrain.SAND: [
-	],
-	Terrain.DIRT: [
-		{"tile": null, "weight": 100},
-	] 
+# Decoration tiles that cannot be interacted with, used as an overlay
+var DECORATIONS = {
+	"forest_flower_white_1": Vector2i(17, 0),
+	"forest_flower_white_2": Vector2i(18, 0),
+	"forest_flower_white_3": Vector2i(19, 0),
+	"forest_flower_white_4": Vector2i(20, 0),
+	"forest_flower_white_5": Vector2i(21, 0),
+	"forest_ground_grass_1": Vector2i(17, 1),
+	"forest_ground_grass_2": Vector2i(18, 1),
+	"forest_ground_grass_3": Vector2i(19, 1),
+	"forest_ground_grass_4": Vector2i(20, 1),
+	"forest_ground_grass_5": Vector2i(21, 1),
 }
 
 func _ready() -> void:
 	randomize()
+	# Load in tiles changed by the player
 	changed_tiles_by_chunk = Global.world_data.changed_tiles_by_chunk
-	noise.seed = Global.world_data.seed
-	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.fractal_octaves = 6
-	noise.frequency = 1.0 / 200.0
 	
-	grass_noise.seed = Global.world_data.seed + 1 # Use a different seed!
-	grass_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	grass_noise.frequency = 1.0 / 35.0 # Smaller, more frequent features
+	# World gen settings
+	object_spawn_rng.seed = Global.world_data.seed
 	
-	$SaveTimer.timeout.connect(_on_save_timer_timeout)
-	#player = get_node("../Player")
+	temperature.seed = Global.world_data.seed # Load in the saved world seed
+	temperature.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	temperature.fractal_octaves = 5
+	temperature.frequency = 1.0 / 5000
+	
+	moisture.seed = Global.world_data.seed + 1
+	moisture.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	moisture.fractal_octaves = 5
+	moisture.frequency = 1.0 / 4500
+	
+	altitude.seed = Global.world_data.seed + 2
+	altitude.noise_type = FastNoiseLite.TYPE_SIMPLEX
+	altitude.fractal_octaves = 5
+	altitude.frequency = 1.0 / 1200
+	
+	$SaveTimer.timeout.connect(_on_save_timer_timeout) # Start timer to save world data
 	set_process(true)
 
 func _process(_delta: float) -> void:
@@ -56,11 +91,12 @@ func _process(_delta: float) -> void:
 	var center_chunk := get_chunk_coords(center)
 	load_chunks_around(center_chunk)
 	unload_far_chunks(center_chunk)
+	#minimap.update_player_position(get_player_tile_coords())
 
 func _input(event):
 	if event.is_action_pressed("change_tile"):
 		var hovered_tile = tilefollower.get_hovered_tile_coords()
-		change_tile_at_follower(hovered_tile, Terrain.GRASS)
+		change_tile_at_follower(hovered_tile, Terrain.SAND)
 		
 func _on_save_timer_timeout() -> void:
 	# Define paths for the main save file and a temporary one
@@ -112,6 +148,7 @@ func _on_save_timer_timeout() -> void:
 		print("Error: Failed to rename temp file, save failed!")
 	
 func change_tile_at_follower(tile_coords: Vector2i, terrain_type: int):
+	#minimap.open_full_map()
 	var chunk_coords = get_chunk_coords(tile_coords)	
 	if not changed_tiles_by_chunk.has(chunk_coords):
 		changed_tiles_by_chunk[chunk_coords] = {}
@@ -143,26 +180,30 @@ func load_chunks_around(center_chunk: Vector2i):
 			# Top and bottom edges of the spiral ring
 			var top_chunk = center_chunk + Vector2i(i, -r)
 			if not generated_chunks.has(top_chunk):
-				generate_chunk(top_chunk)
+				#generate_chunk(top_chunk)
+				generate_chunk_new(top_chunk)
 				generated_chunks[top_chunk] = true
 				return # <- Exit after generating one chunk
 
 			var bottom_chunk = center_chunk + Vector2i(i, r)
 			if not generated_chunks.has(bottom_chunk):
-				generate_chunk(bottom_chunk)
+				#generate_chunk(bottom_chunk)
+				generate_chunk_new(bottom_chunk)
 				generated_chunks[bottom_chunk] = true
 				return # <- Exit after generating one chunk
 
 			# Left and right edges of the spiral ring
 			var left_chunk = center_chunk + Vector2i(-r, i)
 			if not generated_chunks.has(left_chunk):
-				generate_chunk(left_chunk)
+				#generate_chunk(left_chunk)
+				generate_chunk_new(left_chunk)
 				generated_chunks[left_chunk] = true
 				return # <- Exit after generating one chunk
 				
 			var right_chunk = center_chunk + Vector2i(r, i)
 			if not generated_chunks.has(right_chunk):
-				generate_chunk(right_chunk)
+				#generate_chunk(right_chunk)
+				generate_chunk_new(right_chunk)
 				generated_chunks[right_chunk] = true
 				return # <- Exit after generating one chunk
 
@@ -184,65 +225,65 @@ func clear_chunk(chunk_coords: Vector2i):
 		for y in range(area.position.y, area.position.y + area.size.y):
 			for layer in Layers.keys():
 				tilemap.set_cell(Layers[layer], Vector2i(x, y), -1)
+	if chunk_containers.has(chunk_coords):
+		var container = chunk_containers[chunk_coords]
+		container.queue_free() # Deletes the container and all objects inside it
+		chunk_containers.erase(chunk_coords) # Remove from dictionary
 
-func generate_chunk(chunk_coords: Vector2i):
-	# Initial setup (same as before)
+func get_or_create_chunk_container(chunk_coords: Vector2i):
+	# If container already exists get it and skip the rest
+	if chunk_containers.has(chunk_coords):
+		return chunk_containers[chunk_coords]
+	
+	# Create a new object container for this chunk if it didn't already exist
+	var container = Node2D.new()
+	container.name = "Chunk_%d_%d" % [chunk_coords.x, chunk_coords.y]
+	container.y_sort_enabled = true 
+	
+	object_container.add_child(container)
+	chunk_containers[chunk_coords] = container
+	return container
+
+func generate_chunk_new(chunk_coords: Vector2i):
 	var start_x = chunk_coords.x * chunk_size
 	var start_y = chunk_coords.y * chunk_size
-	var rng = RandomNumberGenerator.new()
-	var value_to_hash = [Global.world_data.seed, chunk_coords]
-	rng.seed = hash(value_to_hash)
-
 	for x in range(start_x, start_x + chunk_size):
 		for y in range(start_y, start_y + chunk_size):
+			# World gen setup
 			var tile_pos = Vector2i(x, y)
-			
-			# --- Step 1: Place Base Terrain ---
-			# We still need the base terrain for the ground layer and decoration rules.
-			var base_terrain: int = get_terrain_from_noise(tile_pos)
-			if base_terrain == Terrain.WATER:
+			var temp = 2 * (abs(temperature.get_noise_2d(x, y)))
+			var moist = 2 * (abs(moisture.get_noise_2d(x, y)))
+			var alt = 2 * (abs(altitude.get_noise_2d(x, y)))
+			var tile_seed = Global.world_data.seed + (tile_pos.x * 374761393) + (tile_pos.y * 668265263)
+			# Seed the generator based off the current tile to ensure consistent object spawns
+			object_spawn_rng.seed = tile_seed
+			# Biome Generation
+			# Ocean
+			if alt < 0.2:
+				BetterTerrain.set_cell(tilemap, Layers.UNDERWATER, tile_pos, Terrain.SAND)
+				BetterTerrain.set_cell(tilemap, Layers.WATER, tile_pos, Terrain.WATER)
+				BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.WATER_EDGE)
+				#minimap.paint_tile(tile_pos, "water")
+			# Beach
+			elif between(alt, 0.2, 0.25):
 				BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.SAND)
-				BetterTerrain.set_cell(tilemap, Layers.FLOOR, tile_pos, base_terrain)
+				#minimap.paint_tile(tile_pos, "sand")
+			elif between(alt, 0.25, 0.8):
+				var is_plains = between(moist, 0, 0.4) and between(temp, 0.2, 0.6)
+				var is_autumn = between(moist, 0.4, 0.9) and (temp > 0.6)
+				var is_desert = temp > 0.7 and moist < 0.4
+				if is_plains:
+					BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.PLAIN)
+				elif is_autumn:
+					BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.AUTUMM)
+				elif is_desert:
+					BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.STONE)
+				else:
+					generate_forest(tile_pos, chunk_coords)
 			else:
-				BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, base_terrain)
-			
-			# --- Step 2: Place Grass Using Combined Noise ---
-			# Get the raw noise values for both generators.
-			var terrain_val = noise.get_noise_2d(tile_pos.x, tile_pos.y)
-			var grass_val = grass_noise.get_noise_2d(tile_pos.x, tile_pos.y)
-			
-			# Combine them to create a "fertility" score.
-			var fertility = terrain_val + grass_val
-
-			# Set a single threshold for grass to grow.
-			# Adjust this value to control how much grass appears and how far it spreads.
-			# A lower value (e.g., 0.3) means more grass.
-			# A higher value (e.g., 0.6) means less grass.
-			var fertility_threshold = 0.25
-			if fertility > fertility_threshold:
-				BetterTerrain.set_cell(tilemap, Layers.FLOOR, tile_pos, Terrain.GRASS)
-				base_terrain = Terrain.GRASS
-
-			# --- Step 3: Place Decorations ---
-			if DECORATION_RULES.has(base_terrain):
-				# ... (rest of the decoration code is the same)
-				var possible_decorations = DECORATION_RULES[base_terrain]
-				var total_weight = 0
-				for decoration in possible_decorations:
-					total_weight += decoration.weight
-				var random_pick = rng.randi_range(1, total_weight)
-				var chosen_tile = null
-				for decoration in possible_decorations:
-					random_pick -= decoration.weight
-					if random_pick <= 0:
-						chosen_tile = decoration.tile
-						break
-				if chosen_tile != null:
-					tilemap.set_cell(Layers.COLLISION, tile_pos, 0, chosen_tile)
-
-	# --- Apply manual changes and update autotiling (same as before) ---
+				generate_forest(tile_pos, chunk_coords)
+	# Update tiles changed by the player
 	var changed_tiles_in_this_chunk: Dictionary = changed_tiles_by_chunk.get(chunk_coords, {})
-	# ... (rest of the function is the same)
 	for tile_pos in changed_tiles_in_this_chunk.keys():
 		var tile_data = changed_tiles_in_this_chunk[tile_pos]
 		var terrain_type = tile_data.get("terrain_type", Terrain.GRASS)
@@ -252,13 +293,84 @@ func generate_chunk(chunk_coords: Vector2i):
 	var update_area = Rect2i(start_x - 1, start_y - 1, chunk_size + 2, chunk_size + 2)
 	for layer in Layers.keys():
 		BetterTerrain.update_terrain_area(tilemap, Layers[layer], update_area)
+			
+func between(val, start, end):
+	if start <= val and val < end:
+		return true
 
-# Helper function to determine terrain type for world gen.
-func get_terrain_from_noise(tile_coords: Vector2i) -> int:
-	var val = noise.get_noise_2d(tile_coords.x, tile_coords.y)
-	if val < -0.2:
-		return Terrain.WATER
-	elif val < 0.0:
-		return Terrain.SAND
-	else:
-		return Terrain.DIRT
+func generate_forest(tile_pos, chunk_coords: Vector2i):
+	var detail_noise = altitude.get_noise_2d(tile_pos.x * 15.0, tile_pos.y * 15.0) # used to generate micro biomes
+	var secondary_detail_noise = altitude.get_noise_2d(tile_pos.x * 50.0, tile_pos.y * 50.0) # used to spawn floor decor
+	var density = altitude.get_noise_2d(tile_pos.x * 2.0, tile_pos.y * 2.0) # used to control frequency of micro biomes
+	if detail_noise < -0.6 and density < -0.3: # WATER
+		BetterTerrain.set_cell(tilemap, Layers.UNDERWATER, tile_pos, Terrain.SAND)
+		BetterTerrain.set_cell(tilemap, Layers.WATER, tile_pos, Terrain.WATER)
+		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.WATER_EDGE)
+		#minimap.paint_tile(tile_pos, "water")
+	elif between(detail_noise, -1, -.5) and density < -0.25: # SAND BORDERS AROUND WATER
+		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.SAND)
+		if between(detail_noise, -0.7, -.57):
+			if 0.2 < object_spawn_rng.randf() and object_spawn_rng.randf() < 0.9:
+				var new_plant = spawn_object(tile_pos, chunk_coords, plant)
+				varieties = ["forest_pond_reed_1","forest_pond_reed_2","forest_pond_reed_3"]
+				random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+				new_plant.set_plant_type(random_type)
+		elif between(detail_noise, -.52, -.5):
+			varieties = ["forest_ground_grass_1", "forest_ground_grass_2", "forest_ground_grass_3", "forest_ground_grass_4","forest_ground_grass_5"]
+			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+			tilemap.set_cell(Layers.FLOOR_DECOR, tile_pos, 0, DECORATIONS[random_type])
+			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5"]
+			if 0 < object_spawn_rng.randf() and object_spawn_rng.randf() < 0.3:
+				var new_plant = spawn_object(tile_pos, chunk_coords, plant)
+				random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+				new_plant.set_plant_type(random_type)
+		elif between(detail_noise, -.54, -.52):
+			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5"]
+			if 0 < object_spawn_rng.randf() and object_spawn_rng.randf() < 0.5:
+				var new_plant = spawn_object(tile_pos, chunk_coords, plant)
+				random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+				new_plant.set_plant_type(random_type)
+		#minimap.paint_tile(tile_pos, "sand")
+	elif between(detail_noise, .1, 0.3): # MATTED GRASS
+		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.MATTED_GRASS)
+		#minimap.paint_tile(tile_pos, "grass")
+		# Foliage
+		if 0.6 < object_spawn_rng.randf() and object_spawn_rng.randf() < 0.9:
+			var new_plant = spawn_object(tile_pos, chunk_coords, plant)
+			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5",]
+			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+			new_plant.set_plant_type(random_type)
+		elif object_spawn_rng.randf() > 0.90:
+			spawn_object(tile_pos, chunk_coords, tree)
+	elif between(detail_noise, 0.6, 0.7): # STONE MICRO BIOME
+		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.STONE)
+		#minimap.paint_tile(tile_pos, "stone")
+		if object_spawn_rng.randf() > .95:
+			spawn_object(tile_pos, chunk_coords, placeable)
+	else: # FILL WITH FOREST
+		# Grass/Tiles
+		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.MATTED_GRASS)
+		BetterTerrain.set_cell(tilemap, Layers.FLOOR, tile_pos, Terrain.GRASS)
+		#minimap.paint_tile(tile_pos, "grass")
+		# Floor Decor (flowers pebbles etc)
+		if between(secondary_detail_noise, .4, 8):
+			varieties = ["forest_flower_white_1", "forest_flower_white_2", "forest_flower_white_3", "forest_flower_white_4", "forest_flower_white_5"]
+			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+			tilemap.set_cell(Layers.FLOOR_DECOR, tile_pos, 0, DECORATIONS[random_type])
+		# Foliage
+		if 0.6 < object_spawn_rng.randf() and object_spawn_rng.randf() < 0.9:
+			var new_plant = spawn_object(tile_pos, chunk_coords, plant)
+			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5"]
+			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
+			new_plant.set_plant_type(random_type)
+		elif object_spawn_rng.randf() > 0.90:
+			spawn_object(tile_pos, chunk_coords, tree)
+
+func spawn_object(tile_pos: Vector2i, chunk_coords: Vector2i, scene_to_spawn: PackedScene):
+	var container = get_or_create_chunk_container(chunk_coords)
+	var instance = scene_to_spawn.instantiate()
+	
+	instance.position = tilemap.map_to_local(tile_pos)
+	instance.tile_pos = tile_pos
+	container.add_child(instance)
+	return instance

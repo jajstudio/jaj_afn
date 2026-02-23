@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://dqft0xasefo2s"]
+
+[ext_resource type="Script" uid="uid://dimpeou4qw5h3" path="res://scripts/game/plant.gd" id="1_c6qax"]
+[ext_resource type="Texture2D" uid="uid://ddb37kryb8re1" path="res://assets/images/tilesets/plant_sheet.png" id="2_3kfpi"]
+[ext_resource type="Shader" uid="uid://c8foluqwxplt5" path="res://assets/shaders/foliage_sway.gdshader" id="2_usnww"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7u6uq"]
+shader = ExtResource("2_usnww")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 30000.0
+shader_parameter/interval = 0.0
+shader_parameter/detail = 1.0
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.990000047025
+shader_parameter/offset = 3.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3kfpi"]
+shader = ExtResource("2_usnww")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 10000.0
+shader_parameter/interval = 20.0
+shader_parameter/detail = 1.0
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.990000047025
+shader_parameter/offset = 2.0
+
+[node name="Plant" type="Node2D"]
+script = ExtResource("1_c6qax")
+
+[node name="OneTilePlants" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_7u6uq")
+texture = ExtResource("2_3kfpi")
+centered = false
+offset = Vector2(-8, -13)
+region_enabled = true
+region_rect = Rect2(208.98016, 4.8916864, 10.89093, 27.135014)
+
+[node name="TwoTilePlants" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_3kfpi")
+texture = ExtResource("2_3kfpi")
+offset = Vector2(0, -13.5)
+region_enabled = true
+region_rect = Rect2(239.94098, -0.05587721, 13.80751, 32.082146)
+
+[node name="TwoTilePlantsReflection" type="Sprite2D" parent="TwoTilePlants"]
+z_as_relative = false
+material = SubResource("ShaderMaterial_3kfpi")
+scale = Vector2(-1, -1)
+texture = ExtResource("2_3kfpi")
+offset = Vector2(0, -13.5)
+region_enabled = true
+region_rect = Rect2(239.94098, -0.05587721, 13.80751, 32.082146)

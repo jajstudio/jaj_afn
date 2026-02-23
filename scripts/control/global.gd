@@ -6,7 +6,7 @@ var is_multiplayer : bool
 var in_pause_menu : bool
 var player_position : Vector2
 var world_data : Dictionary
-var preloaded_game_scene = preload("res://scenes/game.tscn")
+var preloaded_game_scene = preload("res://scenes/game/game.tscn")
 @onready var screen_width = get_viewport().size.x
 @onready var screen_height = get_viewport().size.y
 

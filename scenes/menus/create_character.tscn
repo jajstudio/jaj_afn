@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dbfi72utfgcds" path="res://assets/images/ui/picture.png" id="6_8614w"]
 [ext_resource type="FontFile" uid="uid://dcytal8t6youa" path="res://assets/other/fonts/Thixel.ttf" id="6_w388w"]
 [ext_resource type="Texture2D" uid="uid://dpkoj856imj4g" path="res://assets/images/ui/namebox.png" id="7_8mxxh"]
-[ext_resource type="PackedScene" uid="uid://biuiyqggshxc0" path="res://scenes/player.tscn" id="11_w388w"]
+[ext_resource type="PackedScene" uid="uid://biuiyqggshxc0" path="res://scenes/game/player.tscn" id="11_w388w"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8mxxh"]
 texture = ExtResource("2_8614w")

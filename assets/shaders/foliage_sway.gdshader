@@ -24,7 +24,7 @@ uniform float distortion : hint_range(0.0, 1.0);
 uniform float heightOffset : hint_range(0.0, 1.0);
 
 // With the offset value, you can if you want different moves for each asset. Just put a random value (1, 2, 3) in the editor. Don't forget to mark the material as unique if you use this
-uniform float offset = 3;
+uniform float offset = 1;
 
 
 float getWind(vec2 vertex, vec2 uv, float time){

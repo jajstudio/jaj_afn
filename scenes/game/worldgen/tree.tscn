@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://dohlahb2ja0ut"]
+
+[ext_resource type="Shader" uid="uid://c8foluqwxplt5" path="res://assets/shaders/foliage_sway.gdshader" id="1_krfg8"]
+[ext_resource type="Script" uid="uid://beh1ynyffsj1a" path="res://scripts/game/tree.gd" id="1_oc5be"]
+[ext_resource type="Texture2D" uid="uid://bx7y44mopfiu4" path="res://assets/images/tilesets/tree_sheet.png" id="1_vc3hi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oc5be"]
+shader = ExtResource("1_krfg8")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 30000.0
+shader_parameter/interval = 0.0
+shader_parameter/detail = 1.0
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.990000047025
+shader_parameter/offset = 3.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_krfg8"]
+atlas = ExtResource("1_vc3hi")
+region = Rect2(0, 0, 48, 64)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_oc5be"]
+polygon = PackedVector2Array(-3, -1, -3, -4, -1, -4, -1, -5, -1, -5, 1, -7, 1, -5, 1, -3, -1, -3, -1, -1, -1, -1)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_oc5be")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_oc5be")
+position = Vector2(-1.6940659e-21, -6.7762636e-21)
+texture = SubResource("AtlasTexture_krfg8")
+centered = false
+offset = Vector2(-24, -64)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 64)
+
+[node name="TreeReflection" type="Sprite2D" parent="."]
+z_as_relative = false
+material = SubResource("ShaderMaterial_oc5be")
+position = Vector2(-1.6940659e-21, -6.7762636e-21)
+scale = Vector2(-1, -1)
+texture = SubResource("AtlasTexture_krfg8")
+centered = false
+offset = Vector2(-24, -64)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 64)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_oc5be")
+occluder_light_mask = 3

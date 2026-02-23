@@ -13,7 +13,11 @@ extends CharacterBody2D
 
 @onready var eye_dart_timer: Timer = $EyeDartTimer
 @onready var run_animation_timer = $RunAnimationTimer
+@onready var run_animation_timer_legs = $RunAnimationTimerVertical
 @export var base_animation_interval = 0.1
+
+@onready var body := $PlayerBody
+@onready var reflection := $PlayerReflection/PlayerBody2
 
 # --- Animation Variables ---
 enum RunDir { LEFT, RIGHT, UP, DOWN }
@@ -36,13 +40,21 @@ const RUN_FRAMES_LEFT = [
 
 const RUN_FRAMES_DOWN = [
 	"default_run1_down",
-	"default_run2_down", 
+	"default_run1_down", 
 	"default_run2_down",  
-	"default_run3_down",
+	"default_run2_down",
+]
+
+const LEG_FRAMES_DOWN = [
+	"default_down_running1",
+	"default_down_running1",
+	"default_down_running2",
+	"default_down_running2"
 ]
 
 # This variable will track which frame we are on (e.g., 0, 1, 2, 3)
 var current_run_frame = 0
+var current_leg_frame = 0
 
 const EYE_REGIONS = {
 	"look_left": Rect2(22, 2, 6, 2),
@@ -90,9 +102,9 @@ const FEET_REGIONS = {
 	"default_run1_right": Rect2(112, 11, 10, 7),
 	"default_run2_right": Rect2(124, 11, 8, 7),
 	"default_run3_right": Rect2(136, 11, 6, 7),
-	"default_run1_down": Rect2(192, 12, 6, 3),
-	"default_run2_down": Rect2(203, 12, 6, 3),
-	"default_run3_down": Rect2(214, 12, 6, 3),
+	"default_run1_down": Rect2(178, 13, 8, 3),
+	"default_run2_down": Rect2(191, 13, 8, 3),
+	"default_run3_down": Rect2(178, 13, 8, 3),
 }
 
 var eye_directions: Array
@@ -103,6 +115,7 @@ func _ready():
 	
 	eye_dart_timer.timeout.connect(_on_eye_dart_timer_timeout)
 	run_animation_timer.timeout.connect(_on_animation_timer_timeout)
+	run_animation_timer_legs.timeout.connect(_on_leg_animation_timer_timeout)
 
 	_on_eye_dart_timer_timeout()
 	
@@ -128,10 +141,9 @@ func _process(_delta):
 		shirt_sprite.region_rect = BODY_REGIONS["default_down"]
 		hand_sprite.region_rect = HAND_REGIONS["default_down"]
 		head_sprite.region_rect = HEAD_REGIONS["default_down"]
-		leg_sprite.region_rect = LEG_REGIONS["default_down"]
-		if velocity == Vector2.ZERO:	
+		if velocity == Vector2.ZERO:
+			leg_sprite.region_rect = LEG_REGIONS["default_down"]
 			feet_sprite.region_rect = FEET_REGIONS["default_down"]
-	
 		current_run_dir = RunDir.DOWN
 		
 	elif(direction_string.contains("Right")):
@@ -156,15 +168,20 @@ func _process(_delta):
 	if velocity.length() > 0:
 		var speed_ratio = velocity.length() / speed
 		run_animation_timer.wait_time = base_animation_interval / speed_ratio
+		run_animation_timer_legs.wait_time = base_animation_interval / speed_ratio
 		
 		if run_animation_timer.is_stopped():
 			run_animation_timer.start()
+		if run_animation_timer_legs.is_stopped() and current_run_dir == RunDir.DOWN:
+			run_animation_timer_legs.start()
 	else:
 		run_animation_timer.stop()
+		run_animation_timer_legs.stop()
 		current_run_frame = 0 # Reset animation for the next run
 		
-		
-func _physics_process(_delta):
+	_sync_reflection()
+
+func _physics_process(delta: float):
 	Global.player_position = self.global_position
 	
 	var direction := Vector2.ZERO
@@ -176,6 +193,10 @@ func _physics_process(_delta):
 
 	velocity = direction * speed
 	move_and_slide()
+	#global_position += velocity * delta
+	
+	#global_position = global_position.round()
+
 
 func get_run_frames() -> Array:
 	match current_run_dir:
@@ -187,15 +208,29 @@ func get_run_frames() -> Array:
 			return RUN_FRAMES_DOWN
 		_:
 			return RUN_FRAMES_RIGHT # fallback for now
+			
+func get_leg_frames() -> Array:
+	match current_run_dir:
+		RunDir.DOWN:
+			return LEG_FRAMES_DOWN
+		_:
+			return LEG_FRAMES_DOWN # fallback for now
 
 func _on_animation_timer_timeout():
 	var run_frames := get_run_frames()
-	print(run_frames)
+	#print(run_frames)
 
 	current_run_frame = (current_run_frame + 1) % run_frames.size()
 	var frame_key = run_frames[current_run_frame]
-
+	
 	feet_sprite.region_rect = FEET_REGIONS[frame_key]
+	
+func _on_leg_animation_timer_timeout():
+	var leg_frames := get_leg_frames()
+
+	var frame_key = leg_frames[current_run_frame]
+	
+	leg_sprite.region_rect = LEG_REGIONS[frame_key]
 
 func _on_eye_dart_timer_timeout():
 	var random_direction = eye_directions.pick_random()
@@ -203,6 +238,23 @@ func _on_eye_dart_timer_timeout():
 	eye_dart_timer.wait_time = randf_range(1.0, 4.0)
 	eye_dart_timer.start()
 
+func _sync_reflection():
+	for child in body.get_children():
+		if child is Sprite2D:
+			#print("Checking:", child.name)
+			var mirror := reflection.get_node_or_null(NodePath(child.name))
+			#print(mirror)
+			if mirror == null:
+				#print("❌ Missing mirror for:", child.name)
+				continue
+			#print("✅ Synced:", child.name)
+			mirror.texture = child.texture
+			mirror.region_enabled = child.region_enabled
+			mirror.region_rect = child.region_rect
+			#print(child.frame)
+			mirror.flip_h = child.flip_h
+			mirror.rotation = child.rotation
+		
 func change_eyes(expression: String):
 	if EYE_REGIONS.has(expression):
 		eye_sprite.region_rect = EYE_REGIONS[expression]

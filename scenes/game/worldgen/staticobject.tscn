@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6frybrdh7gq"]
+
+[ext_resource type="Texture2D" uid="uid://difdpi4dvhmue" path="res://assets/images/tilesets/small_object_sheet.png" id="1_fpc65"]
+[ext_resource type="Script" uid="uid://dmhstht16use6" path="res://scripts/game/staticobject.gd" id="1_vfdns"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfdns"]
+atlas = ExtResource("1_fpc65")
+region = Rect2(17, 2, 30, 28)
+
+[node name="Staticobject" type="Node2D"]
+script = ExtResource("1_vfdns")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_vfdns")
+centered = false
+offset = Vector2(-15, -28)
