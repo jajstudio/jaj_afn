@@ -43,7 +43,8 @@ enum Terrain {
 	STONE = 7, 
 	AUTUMM = 8,
 	MATTED_GRASS = 9,
-	WATER_EDGE = 10
+	WATER_EDGE = 10,
+	WATER_MASK = 11
 	}
 
 # Decoration tiles that cannot be interacted with, used as an overlay
@@ -163,6 +164,10 @@ func change_tile_at_follower(tile_coords: Vector2i, terrain_type: int):
 	
 	if generated_chunks.has(chunk_coords):
 		generated_chunks.erase(chunk_coords)
+	if chunk_containers.has(chunk_coords):
+		var container = chunk_containers[chunk_coords]
+		container.queue_free() # Deletes the container and all objects inside it
+		chunk_containers.erase(chunk_coords) # Remove from dictionary
 	
 func get_player_tile_coords() -> Vector2i:
 	return tilemap.local_to_map(player.global_position)
@@ -261,13 +266,12 @@ func generate_chunk_new(chunk_coords: Vector2i):
 			# Ocean
 			if alt < 0.2:
 				BetterTerrain.set_cell(tilemap, Layers.UNDERWATER, tile_pos, Terrain.SAND)
+				BetterTerrain.set_cell(tilemap, Layers.WATERSHADER, tile_pos, Terrain.WATER_MASK)
 				BetterTerrain.set_cell(tilemap, Layers.WATER, tile_pos, Terrain.WATER)
 				BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.WATER_EDGE)
-				#minimap.paint_tile(tile_pos, "water")
 			# Beach
 			elif between(alt, 0.2, 0.25):
 				BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.SAND)
-				#minimap.paint_tile(tile_pos, "sand")
 			elif between(alt, 0.25, 0.8):
 				var is_plains = between(moist, 0, 0.4) and between(temp, 0.2, 0.6)
 				var is_autumn = between(moist, 0.4, 0.9) and (temp > 0.6)
@@ -304,9 +308,9 @@ func generate_forest(tile_pos, chunk_coords: Vector2i):
 	var density = altitude.get_noise_2d(tile_pos.x * 2.0, tile_pos.y * 2.0) # used to control frequency of micro biomes
 	if detail_noise < -0.6 and density < -0.3: # WATER
 		BetterTerrain.set_cell(tilemap, Layers.UNDERWATER, tile_pos, Terrain.SAND)
+		BetterTerrain.set_cell(tilemap, Layers.WATERSHADER, tile_pos, Terrain.WATER_MASK)
 		BetterTerrain.set_cell(tilemap, Layers.WATER, tile_pos, Terrain.WATER)
 		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.WATER_EDGE)
-		#minimap.paint_tile(tile_pos, "water")
 	elif between(detail_noise, -1, -.5) and density < -0.25: # SAND BORDERS AROUND WATER
 		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.SAND)
 		if between(detail_noise, -0.7, -.57):
@@ -330,28 +334,25 @@ func generate_forest(tile_pos, chunk_coords: Vector2i):
 				var new_plant = spawn_object(tile_pos, chunk_coords, plant)
 				random_type = varieties[object_spawn_rng.randi() % varieties.size()]
 				new_plant.set_plant_type(random_type)
-		#minimap.paint_tile(tile_pos, "sand")
 	elif between(detail_noise, .1, 0.3): # MATTED GRASS
 		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.MATTED_GRASS)
-		#minimap.paint_tile(tile_pos, "grass")
 		# Foliage
 		if 0.6 < object_spawn_rng.randf() and object_spawn_rng.randf() < 0.9:
 			var new_plant = spawn_object(tile_pos, chunk_coords, plant)
 			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5",]
 			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
 			new_plant.set_plant_type(random_type)
-		elif object_spawn_rng.randf() > 0.90:
-			spawn_object(tile_pos, chunk_coords, tree)
+		elif object_spawn_rng.randf() > 0.95:
+			var new_tree = spawn_object(tile_pos, chunk_coords, tree)
+			new_tree.player = player
 	elif between(detail_noise, 0.6, 0.7): # STONE MICRO BIOME
 		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.STONE)
-		#minimap.paint_tile(tile_pos, "stone")
 		if object_spawn_rng.randf() > .95:
 			spawn_object(tile_pos, chunk_coords, placeable)
 	else: # FILL WITH FOREST
 		# Grass/Tiles
 		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.MATTED_GRASS)
 		BetterTerrain.set_cell(tilemap, Layers.FLOOR, tile_pos, Terrain.GRASS)
-		#minimap.paint_tile(tile_pos, "grass")
 		# Floor Decor (flowers pebbles etc)
 		if between(secondary_detail_noise, .4, 8):
 			varieties = ["forest_flower_white_1", "forest_flower_white_2", "forest_flower_white_3", "forest_flower_white_4", "forest_flower_white_5"]
@@ -363,8 +364,9 @@ func generate_forest(tile_pos, chunk_coords: Vector2i):
 			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5"]
 			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
 			new_plant.set_plant_type(random_type)
-		elif object_spawn_rng.randf() > 0.90:
-			spawn_object(tile_pos, chunk_coords, tree)
+		elif object_spawn_rng.randf() > 0.95:
+			var new_tree = spawn_object(tile_pos, chunk_coords, tree)
+			new_tree.player = player
 
 func spawn_object(tile_pos: Vector2i, chunk_coords: Vector2i, scene_to_spawn: PackedScene):
 	var container = get_or_create_chunk_container(chunk_coords)

@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://rdhmrscxpwcl"]
+
+[ext_resource type="Script" uid="uid://bj7qkxylf0v4o" path="res://scripts/game/leaf.gd" id="1_v2g13"]
+[ext_resource type="Texture2D" uid="uid://bx7y44mopfiu4" path="res://assets/images/tilesets/tree_sheet.png" id="2_vfvtu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2g13"]
+atlas = ExtResource("2_vfvtu")
+region = Rect2(36, 128, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfvtu"]
+atlas = ExtResource("2_vfvtu")
+region = Rect2(40, 128, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a588d"]
+atlas = ExtResource("2_vfvtu")
+region = Rect2(44, 128, 4, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5weo"]
+atlas = ExtResource("2_vfvtu")
+region = Rect2(48, 128, 4, 4)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rreec"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v2g13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vfvtu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a588d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5weo")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}]
+
+[node name="Leaf" type="Node2D"]
+script = ExtResource("1_v2g13")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rreec")
+animation = &"fall"

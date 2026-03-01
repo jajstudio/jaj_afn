@@ -47,6 +47,7 @@ region_enabled = true
 region_rect = Rect2(239.94098, -0.05587721, 13.80751, 32.082146)
 
 [node name="TwoTilePlantsReflection" type="Sprite2D" parent="TwoTilePlants"]
+z_index = 1
 z_as_relative = false
 material = SubResource("ShaderMaterial_3kfpi")
 scale = Vector2(-1, -1)

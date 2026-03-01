@@ -50,6 +50,7 @@ atlas = ExtResource("10_y4r1p")
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g2els")
+speed = 200
 
 [node name="RunAnimationTimer" type="Timer" parent="."]
 
@@ -124,6 +125,7 @@ offset = Vector2(0, -0.5)
 region_enabled = true
 
 [node name="PlayerReflection" type="Sprite2D" parent="."]
+z_index = 1
 z_as_relative = false
 position = Vector2(0, 6)
 scale = Vector2(1, -1)
