@@ -20,7 +20,7 @@ shader_parameter/offset = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krfg8"]
 atlas = ExtResource("1_vc3hi")
-region = Rect2(0, 0, 80, 81)
+region = Rect2(222.77528, 0.022547722, 51.50859, 80.31201)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h4wek"]
 shader = ExtResource("1_h4wek")
@@ -36,12 +36,13 @@ shader_parameter/offset = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2hx86"]
 atlas = ExtResource("3_oc5be")
-region = Rect2(-0.17281723, -0.036863327, 79.33397, 69.27623)
+region = Rect2(158.83856, -0.07170105, 49.13846, 70.26529)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_oc5be")
 leaf_scene = ExtResource("2_2hx86")
 atlas_texture = ExtResource("1_vc3hi")
+atlas_texture_2 = ExtResource("3_oc5be")
 
 [node name="Tree" type="Sprite2D" parent="."]
 y_sort_enabled = true
@@ -49,15 +50,14 @@ material = SubResource("ShaderMaterial_oc5be")
 position = Vector2(-1, 4)
 texture = SubResource("AtlasTexture_krfg8")
 centered = false
-offset = Vector2(-42, -80)
-region_enabled = true
+offset = Vector2(-25, -79)
 region_rect = Rect2(-0.03964615, -0.84230614, 79.980515, 81.41899)
 
 [node name="Shadow" type="Sprite2D" parent="Tree"]
 z_index = 6
 z_as_relative = false
 material = SubResource("ShaderMaterial_h4wek")
-position = Vector2(2, -17)
+position = Vector2(0, -27)
 texture = SubResource("AtlasTexture_2hx86")
 
 [node name="TreeReflection" type="Sprite2D" parent="Tree"]

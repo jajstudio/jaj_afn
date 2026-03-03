@@ -297,7 +297,10 @@ func generate_chunk_new(chunk_coords: Vector2i):
 	var update_area = Rect2i(start_x - 1, start_y - 1, chunk_size + 2, chunk_size + 2)
 	for layer in Layers.keys():
 		BetterTerrain.update_terrain_area(tilemap, Layers[layer], update_area)
-			
+		
+	# After All generation is done reload past mobs
+	get_node("MobManager").load_mobs_for_chunk(chunk_coords)
+		
 func between(val, start, end):
 	if start <= val and val < end:
 		return true
@@ -342,9 +345,15 @@ func generate_forest(tile_pos, chunk_coords: Vector2i):
 			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5",]
 			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
 			new_plant.set_plant_type(random_type)
-		elif object_spawn_rng.randf() > 0.95:
+		elif object_spawn_rng.randf() > 0.95 and object_spawn_rng.randf() < 0.97:
 			var new_tree = spawn_object(tile_pos, chunk_coords, tree)
 			new_tree.player = player
+			new_tree.set_tree_type(new_tree.TREE_TYPE.PINE_LARGE_1)
+		elif object_spawn_rng.randf() > 0.97 and object_spawn_rng.randf() < 1.0 :
+			var new_tree = spawn_object(tile_pos, chunk_coords, tree)
+			new_tree.player = player
+			new_tree.set_tree_type(new_tree.TREE_TYPE.PINE_LARGE_2)
+			
 	elif between(detail_noise, 0.6, 0.7): # STONE MICRO BIOME
 		BetterTerrain.set_cell(tilemap, Layers.GROUND, tile_pos, Terrain.STONE)
 		if object_spawn_rng.randf() > .95:
@@ -364,10 +373,15 @@ func generate_forest(tile_pos, chunk_coords: Vector2i):
 			varieties = ["forest_plant_1", "forest_plant_2", "forest_plant_3", "forest_plant_4", "forest_plant_5"]
 			random_type = varieties[object_spawn_rng.randi() % varieties.size()]
 			new_plant.set_plant_type(random_type)
-		elif object_spawn_rng.randf() > 0.95:
+		elif object_spawn_rng.randf() > 0.95 and object_spawn_rng.randf() < 0.97 :
 			var new_tree = spawn_object(tile_pos, chunk_coords, tree)
 			new_tree.player = player
-
+			new_tree.set_tree_type(new_tree.TREE_TYPE.OAK_LARGE_1)
+		elif object_spawn_rng.randf() > 0.97 and object_spawn_rng.randf() < 1.0:
+			var new_tree = spawn_object(tile_pos, chunk_coords, tree)
+			new_tree.player = player
+			new_tree.set_tree_type(new_tree.TREE_TYPE.OAK_LARGE_2)
+				
 func spawn_object(tile_pos: Vector2i, chunk_coords: Vector2i, scene_to_spawn: PackedScene):
 	var container = get_or_create_chunk_container(chunk_coords)
 	var instance = scene_to_spawn.instantiate()

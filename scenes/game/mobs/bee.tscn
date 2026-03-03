@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtu4egndom632"]
+
+[ext_resource type="Texture2D" uid="uid://ducvvk72m31p3" path="res://assets/images/tilesets/mob_sheet.png" id="1_p3ufn"]
+[ext_resource type="Script" uid="uid://d32hc8i7334he" path="res://scripts/game/bee.gd" id="1_vd5ox"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["Bee"]]
+script = ExtResource("1_vd5ox")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 7
+texture = ExtResource("1_p3ufn")
+region_enabled = true
+region_rect = Rect2(3.9384604, 3.8928118, 9.159343, 7.202219)
+
+[node name="WanderTimer" type="Timer" parent="."]
