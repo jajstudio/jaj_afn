@@ -12,11 +12,10 @@ func _process(delta: float) -> void:
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		self.show()
-		if Global.game_running == true and Global.is_multiplayer == false:
+		if Global.game_running == true:
 			self.global_position = Global.player_position
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			Global.game_running = false
-			get_tree().paused = true
 			self.show()
 		elif Global.game_running == false:
 			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)

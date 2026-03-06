@@ -143,6 +143,9 @@ func _on_world_button_pressed(file_path: String) -> void:
 		Global.game_controller.change_game_scene(Global.preloaded_game_scene)
 		Global.game_controller.change_gui_scene("res://scenes/menus/game_paused.tscn")
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		if Global.is_multiplayer == true:
+			Steam.setLobbyData(SteamManager.current_lobby_id, "seed", str(world_data.seed))
+			print('Set lobby seed to ', world_data.seed)
 		Global.game_running = true
 	else:
 		print("Error parsing JSON for file: " + file_path)

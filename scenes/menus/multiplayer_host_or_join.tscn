@@ -1,0 +1,97 @@
+[gd_scene load_steps=7 format=3 uid="uid://mqhfp10033kn"]
+
+[ext_resource type="Script" uid="uid://ntbih0y1duum" path="res://scripts/gui/multiplayer_host_or_join.gd" id="1_ms7e0"]
+[ext_resource type="Shader" uid="uid://cxd03ly0r6a6t" path="res://assets/shaders/fog.gdshader" id="2_sul65"]
+[ext_resource type="Texture2D" uid="uid://g7m6vi4ixxrc" path="res://assets/images/ui/menubutton.png" id="3_q1c4l"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5u42d"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p0jbd"]
+noise = SubResource("FastNoiseLite_5u42d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_472i7"]
+shader = ExtResource("2_sul65")
+shader_parameter/color = Color(0.7984786, 0.816566, 0.9656411, 1)
+shader_parameter/OCTAVES = 4
+shader_parameter/enable_pixelation = true
+shader_parameter/pixelation_amount = 100
+shader_parameter/fog_mask = SubResource("NoiseTexture2D_p0jbd")
+shader_parameter/fog_direction = Vector2(1, 1)
+shader_parameter/scroll_noise_tex = false
+shader_parameter/noise_scroll_direction = Vector2(1, 0)
+
+[node name="HostJoin" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1_ms7e0")
+
+[node name="Fog" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_472i7")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 670.0
+offset_top = 364.0
+offset_right = -670.0
+offset_bottom = -363.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0196078, 0.898039, 0.168627, 1)
+
+[node name="Background" type="ColorRect" parent="."]
+z_index = -5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.45098, 0, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+zoom = Vector2(4, 4)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.5
+offset_top = -85.5
+offset_right = 53.5
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Host" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Host
+"
+
+[node name="JoinInput" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Join" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="Back" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Back
+"
+
+[node name="Menubutton" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(962, 594)
+texture = ExtResource("3_q1c4l")
+
+[connection signal="pressed" from="VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="VBoxContainer/Back" to="." method="_on_quit_pressed"]

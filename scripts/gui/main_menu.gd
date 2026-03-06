@@ -15,8 +15,10 @@ func _on_single_player_pressed() -> void:
 	self.hide()
 	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
-func _on_host_pressed() -> void:
-	pass # Replace with function body.
+func _on_multiplayer_pressed() -> void:
+	Global.game_controller.change_gui_scene("res://scenes/menus/multiplayer_host_or_join.tscn")
+	self.hide()
+	
 
 func _on_join_pressed() -> void:
 	pass # Replace with function body.

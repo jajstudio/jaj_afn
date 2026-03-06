@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 
 Global="*res://scripts/control/global.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+SteamManager="*res://scripts/control/steam_manager.gd"
 
 [display]
 
@@ -33,6 +34,10 @@ window/size/mode=4
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 window/dpi/allow_hidpi=false
+
+[editor]
+
+version_control/autoload_on_startup=true
 
 [editor_plugins]
 
@@ -87,3 +92,14 @@ common/physics_interpolation=true
 textures/canvas_textures/default_texture_filter=0
 viewport/hdr_2d=true
 2d/snap/snap_2d_vertices_to_pixel=true
+
+[steam]
+
+initialization/app_id=0
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=false
+multiplayer_peer/max_channels=4
+
+[steam_server]
+
+initialization/embed_callbacks=false
