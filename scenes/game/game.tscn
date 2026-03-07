@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bjy1a2h1aq2ok"]
+[gd_scene load_steps=26 format=3 uid="uid://bjy1a2h1aq2ok"]
 
 [ext_resource type="Script" uid="uid://db6g1ph7mb766" path="res://scripts/gui/fps_label.gd" id="1_rwo3j"]
 [ext_resource type="Script" uid="uid://cv6u16qbqrl1j" path="res://scripts/game/day_night_cycle.gd" id="2_ph5vl"]
@@ -7,8 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://ohxln8hb5mlu" path="res://assets/images/tilesets/Grass.png" id="5_y7cus"]
 [ext_resource type="Shader" uid="uid://br27bhqqklxe1" path="res://assets/shaders/water2.gdshader" id="6_kp23o"]
 [ext_resource type="Texture2D" uid="uid://dkn61dbysdcfg" path="res://assets/images/tilesets/Water.png" id="6_wg16f"]
-[ext_resource type="PackedScene" uid="uid://biuiyqggshxc0" path="res://scenes/game/player.tscn" id="7_u6w8h"]
-[ext_resource type="Script" uid="uid://cc50ph4t8ec68" path="res://scripts/gui/camera.gd" id="8_4j704"]
 [ext_resource type="Texture2D" uid="uid://mov3lpywswdb" path="res://assets/images/ui/TileFollower.png" id="8_ssgoc"]
 [ext_resource type="Script" uid="uid://dsvdkc8a8e2jw" path="res://scripts/game/tile_follower.gd" id="9_cueac"]
 [ext_resource type="Texture2D" uid="uid://bi2xbqik4e8la" path="res://assets/images/tilesets/watermask.png" id="9_ftsea"]
@@ -2174,7 +2172,7 @@ ambient_color_gradient = SubResource("Gradient_6fgid")
 z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("3_5rpqn")
-player = NodePath("Player")
+player = NodePath("")
 
 [node name="SaveTimer" type="Timer" parent="World"]
 autostart = true
@@ -2228,13 +2226,10 @@ y_sort_enabled = true
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Player" parent="World" groups=["player"] instance=ExtResource("7_u6w8h")]
+[node name="Players" type="Container" parent="World"]
 z_index = 7
 y_sort_enabled = true
-position = Vector2(0, -3)
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="Camera" type="Camera2D" parent="World/Player"]
-position = Vector2(0, 3)
-zoom = Vector2(4, 4)
-process_callback = 0
-script = ExtResource("8_4j704")
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="World"]

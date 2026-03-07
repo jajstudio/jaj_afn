@@ -4,7 +4,6 @@ func _ready() -> void:
 	self.show()
 	Steam.lobby_created.connect(_on_lobby_created)
 	
-
 func _process(_delta):
 	pass
 	

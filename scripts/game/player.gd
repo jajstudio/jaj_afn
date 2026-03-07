@@ -21,7 +21,7 @@ extends CharacterBody2D
 
 # --- Animation Variables ---
 enum RunDir { LEFT, RIGHT, UP, DOWN }
-var current_run_dir: RunDir = RunDir.RIGHT
+@export var current_run_dir: RunDir = RunDir.RIGHT
 
 # An array to hold the keys for the run animation frames in order
 const RUN_FRAMES_RIGHT = [
@@ -110,6 +110,7 @@ const FEET_REGIONS = {
 var eye_directions: Array
 
 func _ready():
+	$Camera2D.enabled = is_multiplayer_authority()
 	eye_sprite.region_enabled = true
 	eye_directions = EYE_REGIONS.keys()
 	

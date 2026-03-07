@@ -3,6 +3,8 @@ extends Node2D
 @onready var tilemap: TileMap = $WorldTileMap
 @onready var tilefollower: Sprite2D = $TileFollower
 @onready var object_container = $Objects # Node to hold objects (i.e. trees, plants, pots etc.)
+@onready var players_container = $Players
+
 @onready var minimap =  get_tree().get_first_node_in_group("minimap")
 
 @export var player: Node2D 
@@ -85,6 +87,12 @@ func _ready() -> void:
 	altitude.frequency = 1.0 / 1200
 	
 	$SaveTimer.timeout.connect(_on_save_timer_timeout) # Start timer to save world data
+	if multiplayer.is_server():
+		multiplayer.peer_connected.connect(_on_peer_connected)
+		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+		
+		# Spawn the host (you)
+		spawn_player(1)
 	set_process(true)
 
 func _process(_delta: float) -> void:
@@ -390,3 +398,21 @@ func spawn_object(tile_pos: Vector2i, chunk_coords: Vector2i, scene_to_spawn: Pa
 	instance.tile_pos = tile_pos
 	container.add_child(instance)
 	return instance
+
+func _on_peer_connected(id: int):
+	spawn_player(id)
+
+func spawn_player(id: int):
+	var player_scene = preload("res://scenes/game/player.tscn")
+	var new_player = player_scene.instantiate()
+	
+	# Use the Peer ID as the node name so the Synchronizer finds it
+	new_player.name = str(id)
+	players_container.add_child(new_player)
+	if id == multiplayer.get_unique_id():
+		player = new_player
+		print("Local player assigned for coordinate tracking.")
+
+func _on_peer_disconnected(id: int):
+	if players_container.has_node(str(id)):
+		players_container.get_node(str(id)).queue_free()

@@ -19,7 +19,7 @@ func _process(_delta):
 			try_spawn_bee()
 
 func try_spawn_bee():
-	var player = get_node("../Player")
+	var player = get_parent().player
 	var region_pos = get_region_pos(player.global_position)
 	
 	# 1. Count active mobs in this region
@@ -39,7 +39,7 @@ func try_spawn_bee():
 		spawn_at_random_edge()
 
 func spawn_at_random_edge():
-	var player = get_node("../Player") # Path to your Player node
+	var player = get_parent().player # Path to your Player node
 	var angle = randf() * TAU
 	var spawn_dist = 600 # Slightly larger than screen width
 	var spawn_pos = player.global_position + Vector2.RIGHT.rotated(angle) * spawn_dist
@@ -51,7 +51,7 @@ func spawn_at_random_edge():
 	active_mobs.append(new_bee)
 
 func clean_up_mobs():
-	var player = get_node("../Player")
+	var player = get_parent().player
 	for i in range(active_mobs.size() -1, -1, -1):
 		var mob = active_mobs[i]
 		if is_instance_valid(mob) and mob.global_position.distance_to(player.global_position) > 1100:
