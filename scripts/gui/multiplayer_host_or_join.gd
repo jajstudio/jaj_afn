@@ -49,3 +49,26 @@ func _on_lobby_created(connect_result: int, lobby_id: int) -> void:
 		print("Hosting started with seed: ", my_seed)
 		Global.is_multiplayer = true
 		Global.game_controller.change_gui_scene("res://scenes/menus/select_character.tscn")
+
+func _on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
+	if response == 1: # 1 = Success
+		print("Successfully joined lobby: ", lobby_id)
+		
+		# 1. Sync the world seed from the host
+		var joined_seed = Steam.getLobbyData(lobby_id, "seed")
+		if joined_seed != "":
+			Global.world_data.seed = joined_seed.to_int()
+			print("World seed synced: ", Global.world_data.seed)
+		
+		# 2. Setup the networking as a client
+		var peer = SteamMultiplayerPeer.new()
+		# Use the lobby owner's Steam ID to connect
+		var host_id = Steam.getLobbyOwner(lobby_id)
+		peer.create_client(host_id, 0)
+		multiplayer.multiplayer_peer = peer
+		
+		# 3. Transition to the next scene
+		Global.is_multiplayer = true
+		Global.game_controller.change_gui_scene("res://scenes/game/game.tscn")
+	else:
+		print("Failed to join lobby. Error code: ", response)
