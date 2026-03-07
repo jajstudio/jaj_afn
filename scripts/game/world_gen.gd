@@ -64,6 +64,7 @@ var DECORATIONS = {
 }
 
 func _ready() -> void:
+	set_process(false)
 	randomize()
 	# Load in tiles changed by the player
 	if Global.world_data.has("changed_tiles_by_chunk"):
@@ -183,7 +184,9 @@ func change_tile_at_follower(tile_coords: Vector2i, terrain_type: int):
 		chunk_containers.erase(chunk_coords) # Remove from dictionary
 	
 func get_player_tile_coords() -> Vector2i:
-	return tilemap.local_to_map(player.global_position)
+	if is_instance_valid(player):
+		return tilemap.local_to_map(player.global_position)
+	return Vector2i.ZERO
 
 func get_chunk_coords(tile_coords: Vector2i) -> Vector2i:
 	return Vector2i(
