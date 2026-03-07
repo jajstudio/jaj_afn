@@ -52,6 +52,9 @@ func _on_lobby_created(connect_result: int, lobby_id: int) -> void:
 		Global.game_controller.change_gui_scene("res://scenes/menus/select_character.tscn")
 
 func _on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
+	if Steam.getLobbyOwner(lobby_id) == Steam.getSteamID():
+		print("Lobby owner joined their own lobby. Skipping client setup.")
+		return
 	if response == 1: # 1 = Success
 		print("Successfully joined lobby: ", lobby_id)
 		

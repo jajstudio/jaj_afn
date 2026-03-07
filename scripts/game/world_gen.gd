@@ -66,7 +66,12 @@ var DECORATIONS = {
 func _ready() -> void:
 	randomize()
 	# Load in tiles changed by the player
-	changed_tiles_by_chunk = Global.world_data.changed_tiles_by_chunk
+	if Global.world_data.has("changed_tiles_by_chunk"):
+		changed_tiles_by_chunk = Global.world_data.changed_tiles_by_chunk
+	else:
+		# If it's a new player joining, start with an empty dictionary
+		# The Host will send the real data via RPC shortly after
+		changed_tiles_by_chunk = {}
 	
 	# World gen settings
 	object_spawn_rng.seed = Global.world_data.seed
@@ -399,8 +404,27 @@ func spawn_object(tile_pos: Vector2i, chunk_coords: Vector2i, scene_to_spawn: Pa
 	container.add_child(instance)
 	return instance
 
+
+# MULTIPLAYER STUFF
+@rpc("authority", "call_remote", "reliable")
+func sync_world_state(encoded_data: String):
+	var json = JSON.new()
+	var error = json.parse(encoded_data)
+	if error == OK:
+		# Update the global data with what the host sent
+		Global.world_data.changed_tiles_by_chunk = json.get_data()
+		# Refresh the chunks the player is currently seeing
+		generated_chunks.clear() 
+		print("World state synced from host!")
+
 func _on_peer_connected(id: int):
 	spawn_player(id)
+	
+	# Only the host sends the data
+	if multiplayer.is_server():
+		var data_to_send = JSON.stringify(Global.world_data.changed_tiles_by_chunk)
+		# Send the dictionary specifically to the player who just joined
+		sync_world_state.rpc_id(id, data_to_send)
 
 func spawn_player(id: int):
 	var player_scene = preload("res://scenes/game/player.tscn")
