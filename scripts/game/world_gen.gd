@@ -98,7 +98,7 @@ func _ready() -> void:
 		
 		# Spawn the host (you)
 		spawn_player(1)
-	set_process(true)
+		
 
 func _process(_delta: float) -> void:
 	var center := get_player_tile_coords()
@@ -436,6 +436,7 @@ func spawn_player(id: int):
 	if id == multiplayer.get_unique_id():
 		player = new_player
 		print("Local player assigned for coordinate tracking.")
+		set_process(true)
 
 func _on_peer_disconnected(id: int):
 	if players_container.has_node(str(id)):
