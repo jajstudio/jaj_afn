@@ -4,6 +4,7 @@ extends Node2D
 @onready var tilefollower: Sprite2D = $TileFollower
 @onready var object_container = $Objects # Node to hold objects (i.e. trees, plants, pots etc.)
 @onready var players_container = $Players
+@onready var mob_manager = $MobManager
 
 @onready var minimap =  get_tree().get_first_node_in_group("minimap")
 
@@ -440,6 +441,8 @@ func spawn_player(id: int):
 		player = new_player
 		print("Local player assigned for coordinate tracking.")
 		set_process(true)
+		mob_manager.set_process(true)
+		
 
 func _on_peer_disconnected(id: int):
 	if players_container.has_node(str(id)):

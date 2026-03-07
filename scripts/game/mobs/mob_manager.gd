@@ -11,6 +11,9 @@ var active_mobs = []
 var region_mob_counts = {} 
 var remembered_mobs = {} 
 
+func _ready() -> void:
+	set_process(false)
+
 func _process(_delta):
 	# Only run every ~30 frames to save CPU
 	if Engine.get_frames_drawn() % 30 == 0:
