@@ -52,7 +52,7 @@ func _on_lobby_created(connect_result: int, lobby_id: int) -> void:
 		Global.game_controller.change_gui_scene("res://scenes/menus/select_character.tscn")
 
 func _on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
-	if response == 0: # 1 = Success
+	if response == 1: # 1 = Success
 		print("Successfully joined lobby: ", lobby_id)
 		
 		# 1. Sync the world seed from the host
