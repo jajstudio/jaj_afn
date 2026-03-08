@@ -208,4 +208,5 @@ region_enabled = true
 replication_config = SubResource("SceneReplicationConfig_3vq1g")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 zoom = Vector2(4, 4)

@@ -73,6 +73,8 @@ func _on_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response:
 		
 		# 3. Transition to the next scene
 		Global.is_multiplayer = true
-		Global.game_controller.change_gui_scene("res://scenes/game/game.tscn")
+		Global.game_controller.change_game_scene(Global.preloaded_game_scene)
+		Global.game_controller.change_gui_scene("res://scenes/menus/game_paused.tscn")
+		Global.game_running = true
 	else:
 		print("Failed to join lobby. Error code: ", response)

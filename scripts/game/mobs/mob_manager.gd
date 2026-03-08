@@ -2,10 +2,10 @@ extends Node2D
 
 @export var bee_scene: PackedScene
 @export var max_total_mobs: int = 100
-@export var mob_limits = {"Bee": 10} # Limits specific mobs
+@export var mob_limits = {"Bee": 1} # Limits specific mobs
 @onready var world_tile_map = get_node("../WorldTileMap") 
 @export var chunk_size: int = 6 # Set this to match your generation script
-@export var region_size_in_chunks: int = 10
+@export var region_size_in_chunks: int = 1000
 
 var active_mobs = []
 var region_mob_counts = {} 

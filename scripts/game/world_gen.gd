@@ -93,13 +93,14 @@ func _ready() -> void:
 	altitude.fractal_octaves = 5
 	altitude.frequency = 1.0 / 1200
 	
-	$SaveTimer.timeout.connect(_on_save_timer_timeout) # Start timer to save world data
+	
 	if multiplayer.is_server():
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-		
+		$SaveTimer.timeout.connect(_on_save_timer_timeout) # Start timer to save world data
 		# Spawn the host (you)
-		spawn_player(1)
+		player = spawn_player(1)
+		set_process(true)
 		
 
 func _process(_delta: float) -> void:
@@ -109,6 +110,9 @@ func _process(_delta: float) -> void:
 	unload_far_chunks(center_chunk)
 	#minimap.update_player_position(get_player_tile_coords())
 
+func _enter_tree() -> void:
+	$Players/MultiplayerSpawner.spawned.connect(_on_player_spawned)
+	
 func _input(event):
 	if event.is_action_pressed("change_tile"):
 		var hovered_tile = tilefollower.get_hovered_tile_coords()
@@ -185,9 +189,7 @@ func change_tile_at_follower(tile_coords: Vector2i, terrain_type: int):
 		chunk_containers.erase(chunk_coords) # Remove from dictionary
 	
 func get_player_tile_coords() -> Vector2i:
-	if is_instance_valid(player):
-		return tilemap.local_to_map(player.global_position)
-	return Vector2i.ZERO
+	return tilemap.local_to_map(player.global_position)
 
 func get_chunk_coords(tile_coords: Vector2i) -> Vector2i:
 	return Vector2i(
@@ -422,28 +424,36 @@ func sync_world_state(encoded_data: String):
 		print("World state synced from host!")
 
 func _on_peer_connected(id: int):
-	spawn_player(id)
-	
-	# Only the host sends the data
+	# ONLY the host spawns players. The Spawner replicates it to others.
 	if multiplayer.is_server():
+		spawn_player(id)
+		
+		# Send world data to the specific peer
 		var data_to_send = JSON.stringify(Global.world_data.changed_tiles_by_chunk)
-		# Send the dictionary specifically to the player who just joined
 		sync_world_state.rpc_id(id, data_to_send)
 
 func spawn_player(id: int):
+	# This now only runs on the Host/Server
 	var player_scene = preload("res://scenes/game/player.tscn")
 	var new_player = player_scene.instantiate()
-	
-	# Use the Peer ID as the node name so the Synchronizer finds it
-	new_player.name = str(id)
+	new_player.name = str(id) 
+	new_player.set_multiplayer_authority(id)
 	players_container.add_child(new_player)
-	if id == multiplayer.get_unique_id():
-		player = new_player
-		print("Local player assigned for coordinate tracking.")
-		set_process(true)
-		mob_manager.set_process(true)
-		
+	return new_player
+	
 
 func _on_peer_disconnected(id: int):
 	if players_container.has_node(str(id)):
 		players_container.get_node(str(id)).queue_free()
+
+func _on_player_spawned(node: Node):
+	# This runs on EVERYONE whenever a new player node is replicated
+	var id = node.name.to_int()
+	node.set_multiplayer_authority(id)
+	print('test')
+	# This is where the client finally assigns THEIR own player variable
+	if id == multiplayer.get_unique_id():
+		player = node
+		print("Client: My local player is now assigned!")
+		set_process(true)
+		mob_manager.set_process(true)

@@ -110,7 +110,6 @@ const FEET_REGIONS = {
 var eye_directions: Array
 
 func _ready():
-	$Camera2D.enabled = is_multiplayer_authority()
 	eye_sprite.region_enabled = true
 	eye_directions = EYE_REGIONS.keys()
 	
@@ -121,6 +120,9 @@ func _ready():
 	_on_eye_dart_timer_timeout()
 	
 func _process(_delta):
+	if not is_multiplayer_authority():
+		$Camera2D.enabled = false
+		return
 	var mouse_position = get_global_mouse_position()
 	var to_mouse = mouse_position - self.global_position
 
@@ -183,6 +185,9 @@ func _process(_delta):
 	_sync_reflection()
 
 func _physics_process(delta: float):
+	if not is_multiplayer_authority():
+		return
+		
 	Global.player_position = self.global_position
 	
 	var direction := Vector2.ZERO
